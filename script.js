@@ -1,3 +1,28 @@
+// Typewriter printing of the hero headline.
+(function () {
+  const el = document.querySelector("[data-typewriter]");
+  if (!el) return;
+  const full = el.textContent.trim();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { el.textContent = full; return; }
+  el.textContent = "";
+  el.classList.add("typing");
+  let i = 0;
+  function type() {
+    el.textContent = full.slice(0, i);
+    if (i < full.length) {
+      i++;
+      // Slight pause after spaces/commas for a natural cadence.
+      const prev = full[i - 1];
+      const delay = prev === " " ? 70 : prev === "," ? 220 : 52 + Math.random() * 34;
+      setTimeout(type, delay);
+    } else {
+      el.classList.remove("typing");
+    }
+  }
+  setTimeout(type, 360);
+})();
+
 // Contact popup — opened by any [data-contact] trigger (e.g. "Request a pilot").
 (function () {
   const modal = document.getElementById("contact-modal");
