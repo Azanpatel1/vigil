@@ -132,31 +132,38 @@ if (statEl) {
   let nodes = [], edges = [], adj = [], hubs = [];
   let pending = [], labels = [];
   let lastAuto = 0, built = false;
-  let brainPath = null, fissurePath = null, brainBox = null;
+  let brainPath = null, fissurePath = null;
+  let sc = 1, ox = 0, oy = 0;
+  const rawBrain = new Path2D(BRAIN);
 
   const rnd = (a, b) => a + Math.random() * (b - a);
 
   function fitBrain() {
     // Cap height at 72% so a clear band remains below the brain for the caption,
     // and bias the brain toward the top.
-    const scale = Math.min((W * 0.88) / BW, (H * 0.72) / BH);
-    const ox = (W - BW * scale) / 2;
-    const oy = (H - BH * scale) * 0.22;
-    const m = new DOMMatrix([scale, 0, 0, scale, ox, oy]);
+    sc = Math.min((W * 0.88) / BW, (H * 0.72) / BH);
+    ox = (W - BW * sc) / 2;
+    oy = (H - BH * sc) * 0.22;
+    const m = new DOMMatrix([sc, 0, 0, sc, ox, oy]);
     brainPath = new Path2D(); brainPath.addPath(new Path2D(BRAIN), m);
     fissurePath = new Path2D(); fissurePath.addPath(new Path2D(FISSURE), m);
-    brainBox = { x0: ox, y0: oy, x1: ox + BW * scale, y1: oy + BH * scale };
   }
 
   function build() {
     nodes = []; edges = []; adj = []; hubs = [];
     const N = 74;
     let attempts = 0;
+    // Test points in the raw design space under an identity transform so the
+    // hit-test matches the silhouette regardless of the canvas dpr transform.
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     while (nodes.length < N && attempts < N * 60) {
       attempts++;
-      const x = rnd(brainBox.x0, brainBox.x1);
-      const y = rnd(brainBox.y0, brainBox.y1);
-      if (!ctx.isPointInPath(brainPath, x, y)) continue;
+      const dx = rnd(0, BW);
+      const dy = rnd(0, BH);
+      if (!ctx.isPointInPath(rawBrain, dx, dy)) continue;
+      const x = ox + dx * sc;
+      const y = oy + dy * sc;
       nodes.push({
         x0: x, y0: y, _x: x, _y: y, act: 0,
         r: rnd(1.8, 3.1), spd: rnd(0.5, 1.3), amp: rnd(1.2, 3),
@@ -164,6 +171,7 @@ if (statEl) {
         color: PALETTE[(Math.random() * PALETTE.length) | 0],
       });
     }
+    ctx.restore();
     for (let i = 0; i < 6; i++) {
       const idx = (Math.random() * nodes.length) | 0;
       nodes[idx].r = rnd(4.2, 6.5); nodes[idx].hub = true; hubs.push(idx);
