@@ -14,34 +14,27 @@
   <main id="top">
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-bg" aria-hidden="true">
-        <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <defs>
-            <path id="eeg" d="M0,160 L120,160 L150,160 L165,90 L180,230 L200,120 L215,160 L360,160 L390,160 L405,60 L420,250 L440,110 L455,160 L600,160 L630,160 L645,100 L660,210 L680,130 L695,160 L840,160 L870,160 L885,70 L900,240 L920,115 L935,160 L1080,160 L1110,160 L1125,95 L1140,225 L1160,125 L1175,160 L1320,160 L1350,160 L1365,85 L1380,235 L1400,120 L1415,160 L1440,160" />
-            <path id="eeg2" d="M0,160 L60,160 L80,140 L100,178 L130,150 L160,170 L190,148 L240,160 L300,160 L330,128 L355,196 L380,150 L430,160 L520,160 L545,120 L565,200 L585,158 L640,160 L720,160 L745,138 L770,182 L800,150 L860,160 L960,160 L990,126 L1012,198 L1035,150 L1090,160 L1180,160 L1205,140 L1228,180 L1255,150 L1320,160 L1410,160 L1440,160" />
-          </defs>
-          <g class="wave-soft-pos">
-            <g class="wave-scroll wave-soft">
-              <use href="#eeg2" x="0" />
-              <use href="#eeg2" x="1440" />
-            </g>
-          </g>
-          <g class="wave-scroll wave-main">
-            <use href="#eeg" x="0" />
-            <use href="#eeg" x="1440" />
-          </g>
-        </svg>
-      </div>
-      <div class="container hero-content">
-        <span class="eyebrow eyebrow-light">Non-invasive neurodiagnostics</span>
-        <h1 class="hero-title">See the mind<br />the body can't show.</h1>
-        <p class="hero-sub">Real time bedside brain activity — revealing awareness, intent, and recovery in patients who cannot move, speak, or respond.</p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-solid">Request a pilot <span class="arrow">↗</span></a>
-          <a href="#problem" class="btn btn-ghost">Why it matters</a>
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <span class="eyebrow eyebrow-light">Non-invasive neurodiagnostics</span>
+          <h1 class="hero-title">See the mind<br />the body can't show.</h1>
+          <p class="hero-sub">Real time bedside brain activity — revealing awareness, intent, and recovery in patients who cannot move, speak, or respond.</p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-solid" data-reveal="#contact">Request a pilot <span class="arrow">↗</span></a>
+            <a href="#problem" class="btn btn-ghost" data-reveal="#problem">Why it matters</a>
+          </div>
+        </div>
+        <div class="hero-net">
+          <canvas id="neural-net" aria-hidden="true"></canvas>
+          <span class="net-hint">Decoding neural activity in real time</span>
         </div>
       </div>
     </section>
+
+    <!-- EVERYTHING BELOW THE HERO — hidden until a hero button is clicked -->
+    <div id="more" class="more" hidden>
+    <button class="more-home" type="button" aria-label="Back to start">← Vigil</button>
 
     <!-- PROBLEM / STAT -->
     <section class="problem" id="problem">
@@ -208,6 +201,7 @@
         <span class="cta-fine">For research and investigational use. Not yet cleared by the FDA.</span>
       </div>
     </section>
+    </div>
   </main>
 
   <footer class="footer">

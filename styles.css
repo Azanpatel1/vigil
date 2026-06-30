@@ -150,27 +150,38 @@ a { color: inherit; text-decoration: none; }
   background: radial-gradient(60% 60% at 28% 82%, rgba(124,154,142,0.14), transparent 60%),
               radial-gradient(52% 52% at 86% 22%, rgba(192,151,63,0.14), transparent 60%);
 }
-.wave { position: absolute; bottom: 12%; left: 0; width: 100%; height: 42%; overflow: hidden; }
-/* Continuously scrolling EEG traces, like a live patient monitor. Two identical
-   copies (the second offset by one viewBox width) make the loop seamless. */
-.wave-scroll { will-change: transform; }
-.wave-main {
-  fill: none; stroke: var(--gold); stroke-width: 2; opacity: 0.85;
-  filter: drop-shadow(0 0 5px rgba(192, 151, 63, 0.3));
-  animation: eeg-scroll 17s linear infinite, eeg-pulse 2.4s ease-in-out infinite;
+/* Hero two-column layout: copy on the left, interactive neural net on the right */
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
 }
-.wave-soft {
-  fill: none; stroke: var(--teal); stroke-width: 1.5; opacity: 0.32;
-  animation: eeg-scroll 27s linear infinite;
+.hero-net {
+  position: relative;
+  width: 100%;
+  height: clamp(440px, 60vh, 640px);
 }
-.wave-soft-pos { transform: translateY(34px) scaleY(0.6); }
-@keyframes eeg-scroll { to { transform: translateX(-1440px); } }
-@keyframes eeg-pulse {
-  0%, 100% { filter: drop-shadow(0 0 4px rgba(192, 151, 63, 0.25)); }
-  50% { filter: drop-shadow(0 0 11px rgba(192, 151, 63, 0.6)); }
+#neural-net {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
-@media (prefers-reduced-motion: reduce) {
-  .wave-main, .wave-soft { animation: none; }
+.net-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  pointer-events: none;
+  opacity: 0.8;
 }
 
 .hero-content { position: relative; z-index: 2; }
@@ -189,6 +200,37 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 38px;
 }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* Single-screen landing: lock scrolling until a hero button reveals the rest. */
+body.landing { overflow: hidden; height: 100vh; }
+body.landing .footer { display: none; }
+.more[hidden] { display: none; }
+
+/* Floating "back to start" control shown once the rest of the page is revealed */
+.more-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background: rgba(247, 245, 239, 0.78);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(22, 24, 29, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.more-home:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(22, 24, 29, 0.12); }
 
 /* PROBLEM — immersive bedside scene */
 .problem { padding: 0; background: var(--cream); }
@@ -376,6 +418,7 @@ a { color: inherit; text-decoration: none; }
 }
 .device-wave { position: absolute; width: 70%; height: 90px; opacity: 0.85; }
 .device-wave path { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 3s linear infinite; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
 .device-tag {
   position: absolute; bottom: 22px; left: 0; right: 0; text-align: center;
   font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.6);
@@ -440,6 +483,8 @@ a { color: inherit; text-decoration: none; }
 /* Responsive */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  .hero-grid { grid-template-columns: 1fr; gap: 10px; }
+  .hero-net { height: 340px; order: 2; }
   .problem-cards { grid-template-columns: 1fr; }
   .feature-grid { grid-template-columns: 1fr; }
   .science-grid { grid-template-columns: 1fr; gap: 40px; }
