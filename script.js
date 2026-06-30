@@ -139,11 +139,10 @@ if (statEl) {
   const rnd = (a, b) => a + Math.random() * (b - a);
 
   function fitBrain() {
-    // Cap height at 72% so a clear band remains below the brain for the caption,
-    // and bias the brain toward the top.
-    sc = Math.min((W * 0.88) / BW, (H * 0.72) / BH);
+    // Fill most of the panel; leave a small band below the brain for the caption.
+    sc = Math.min((W * 0.98) / BW, (H * 0.86) / BH);
     ox = (W - BW * sc) / 2;
-    oy = (H - BH * sc) * 0.22;
+    oy = (H - BH * sc) * 0.12;
     const m = new DOMMatrix([sc, 0, 0, sc, ox, oy]);
     brainPath = new Path2D(); brainPath.addPath(new Path2D(BRAIN), m);
     fissurePath = new Path2D(); fissurePath.addPath(new Path2D(FISSURE), m);
@@ -166,7 +165,7 @@ if (statEl) {
       const y = oy + dy * sc;
       nodes.push({
         x0: x, y0: y, _x: x, _y: y, act: 0,
-        r: rnd(1.8, 3.1), spd: rnd(0.5, 1.3), amp: rnd(1.2, 3),
+        r: rnd(3.6, 6.2), spd: rnd(0.5, 1.3), amp: rnd(2.2, 5),
         ph: rnd(0, 6.28), ph2: rnd(0, 6.28),
         color: PALETTE[(Math.random() * PALETTE.length) | 0],
       });
@@ -174,7 +173,7 @@ if (statEl) {
     ctx.restore();
     for (let i = 0; i < 6; i++) {
       const idx = (Math.random() * nodes.length) | 0;
-      nodes[idx].r = rnd(4.2, 6.5); nodes[idx].hub = true; hubs.push(idx);
+      nodes[idx].r = rnd(8.4, 13); nodes[idx].hub = true; hubs.push(idx);
     }
     adj = nodes.map(() => []);
     const seen = new Set();
@@ -286,10 +285,10 @@ if (statEl) {
       ctx.moveTo(a._x, a._y); ctx.lineTo(b._x, b._y);
       if (act > 0.04) {
         ctx.strokeStyle = `rgba(${GOLD},${0.12 + 0.62 * act})`;
-        ctx.lineWidth = 0.6 + 1.5 * act;
+        ctx.lineWidth = 1 + 2.2 * act;
       } else {
         ctx.strokeStyle = "rgba(22,24,29,0.09)";
-        ctx.lineWidth = 0.6;
+        ctx.lineWidth = 0.9;
       }
       ctx.stroke();
     }
@@ -316,9 +315,9 @@ if (statEl) {
       if (age < 240) alpha = age / 240;
       else if (age > life - 650) alpha = (life - age) / 650;
       const n = nodes[l.i], rise = Math.min(age * 0.02, 16);
-      ctx.font = "600 15px Inter, -apple-system, sans-serif";
-      const tw = ctx.measureText(l.text).width, padX = 11, h = 27;
-      let lx = n._x + 16, py = n._y - 34 - rise;
+      ctx.font = "600 17px Inter, -apple-system, sans-serif";
+      const tw = ctx.measureText(l.text).width, padX = 13, h = 31;
+      let lx = n._x + 18, py = n._y - 38 - rise;
       lx = Math.max(6, Math.min(lx, W - tw - padX * 2 - 6));
       py = Math.max(6, py);
       ctx.beginPath(); ctx.moveTo(n._x, n._y); ctx.lineTo(lx + 8, py + h);
@@ -327,7 +326,7 @@ if (statEl) {
       ctx.fillStyle = `rgba(247,245,239,${0.94 * alpha})`; ctx.fill();
       ctx.strokeStyle = `rgba(${GOLD},${0.7 * alpha})`; ctx.lineWidth = 1; ctx.stroke();
       ctx.fillStyle = `rgba(22,24,29,${alpha})`;
-      ctx.fillText(l.text, lx + padX, py + 18);
+      ctx.fillText(l.text, lx + padX, py + 21);
     }
 
     requestAnimationFrame(draw);
