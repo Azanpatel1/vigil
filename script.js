@@ -1,3 +1,25 @@
+// Contact popup — opened by any [data-contact] trigger (e.g. "Request a pilot").
+(function () {
+  const modal = document.getElementById("contact-modal");
+  if (!modal) return;
+  const open = (e) => {
+    if (e) e.preventDefault();
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  };
+  const close = () => {
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  };
+  document.querySelectorAll("[data-contact]").forEach((b) => b.addEventListener("click", open));
+  modal.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.hidden) close();
+  });
+})();
+
 // Single-screen landing: hero only, no scroll. Hero buttons reveal the rest of
 // the page — "Why it matters" jumps to the story, "Request a pilot" to the CTA.
 (function () {
