@@ -140,9 +140,10 @@ if (statEl) {
 
   function fitBrain() {
     // Fill most of the panel; leave a small band below the brain for the caption.
-    sc = Math.min((W * 0.98) / BW, (H * 0.86) / BH);
-    // Bias the brain toward the right side of the panel.
-    ox = (W - BW * sc) * 0.92;
+    // Cap width below the panel so there's real room to push the brain right.
+    sc = Math.min((W * 0.78) / BW, (H * 0.86) / BH);
+    // Right-align the brain (small margin off the right edge).
+    ox = (W - BW * sc) * 0.98;
     oy = (H - BH * sc) * 0.12;
     const m = new DOMMatrix([sc, 0, 0, sc, ox, oy]);
     brainPath = new Path2D(); brainPath.addPath(new Path2D(BRAIN), m);

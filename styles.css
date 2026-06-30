@@ -159,7 +159,7 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
+  grid-template-columns: 0.92fr 1.08fr;
   align-items: center;
   gap: 24px;
   width: 100%;
@@ -190,11 +190,17 @@ a { color: inherit; text-decoration: none; }
 
 .hero-content { position: relative; z-index: 2; }
 .hero-title {
-  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  font-size: clamp(2.4rem, 5.6vw, 4.6rem);
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.035em;
   margin-bottom: 26px;
+  /* Never let the headline exceed four lines */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
 }
 .hero-sub {
   font-size: clamp(1.1rem, 1.9vw, 1.42rem);
